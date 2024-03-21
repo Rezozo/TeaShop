@@ -1,1 +1,15 @@
-
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST_NAME:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE:tea_shop}
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:0987}
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    drop-first: false
+    enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
