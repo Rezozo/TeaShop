@@ -13,3 +13,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+
+tea:
+  secret-key: 38792F423F4528472B4B6250655368566D597133743677397A24432646294A40
+  expiration:
+    token: 2592000
+    refresh-token: P9W

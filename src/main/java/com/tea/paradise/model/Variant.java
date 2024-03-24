@@ -1,5 +1,6 @@
 package com.tea.paradise.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Variant {
     private Integer id;
 
     @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Package> packages;
 
     @Column

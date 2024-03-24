@@ -1,5 +1,6 @@
 package com.tea.paradise.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +25,10 @@ public class Category {
     private Integer id;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<Product> products;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 

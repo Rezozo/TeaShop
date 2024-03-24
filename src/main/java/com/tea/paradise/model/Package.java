@@ -1,5 +1,6 @@
 package com.tea.paradise.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,10 +40,12 @@ public class Package {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
+    @JsonBackReference
     private Variant variant;
 
     @Column

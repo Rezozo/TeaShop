@@ -1,5 +1,7 @@
 package com.tea.paradise.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,10 +40,12 @@ public class Product {
     private List<Users> favorite_users;
 
     @OneToMany(mappedBy = "product")
+    @JsonManagedReference
     private List<Package> packages;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     @Column
