@@ -40,6 +40,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @Column(name = "created_date", updatable = false)

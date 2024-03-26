@@ -1,6 +1,7 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tea.paradise.enums.VariantType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,5 +30,6 @@ public class Variant {
     private List<Package> packages;
 
     @Column
-    private String title;
+    @Enumerated(EnumType.STRING)
+    private VariantType title;
 }

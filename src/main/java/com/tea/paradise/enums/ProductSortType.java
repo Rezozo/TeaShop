@@ -1,6 +1,6 @@
 package com.tea.paradise.enums;
 
-public enum SortType {
+public enum ProductSortType {
     CHEAP("По возрастанию цены"),
     EXPENSIVE("По убыванию цены"),
     POPULAR("По популярности"),
@@ -8,7 +8,7 @@ public enum SortType {
 
     private final String value;
 
-    SortType(String value) {
+    ProductSortType(String value) {
         this.value = value;
     }
 }

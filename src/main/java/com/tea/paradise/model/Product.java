@@ -48,6 +48,10 @@ public class Product {
     @JsonBackReference
     private Category category;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Review> reviews;
+
     @Column
     private String article;
 

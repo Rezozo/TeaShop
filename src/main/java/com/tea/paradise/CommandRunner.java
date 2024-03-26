@@ -15,6 +15,7 @@ public class CommandRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         initService.initRoles();
-        initService.initOrderStatuses(); // TODO add variant init
+        initService.initOrderStatuses();
+        initService.initVariants();
     }
 }
