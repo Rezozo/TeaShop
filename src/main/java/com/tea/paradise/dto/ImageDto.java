@@ -10,4 +10,5 @@ import lombok.*;
 public class ImageDto {
     private Long id;
     private byte[] image;
+    private String fileName;
 }

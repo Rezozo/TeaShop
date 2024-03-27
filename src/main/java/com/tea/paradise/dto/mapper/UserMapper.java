@@ -16,8 +16,6 @@ import java.util.List;
 public abstract class UserMapper {
     @Autowired
     BucketMapper bucketMapper;
-    @Autowired
-    AddressMapper addressMapper;
 
     @Mapping(source = "users.id", target = "id")
     @Mapping(source = "favorites", target = "favorites")
@@ -26,8 +24,7 @@ public abstract class UserMapper {
     public abstract UserDto toDto(Users users,
                                   List<Long> favorites,
                                   UserRole userRole,
-                                  BucketDto bucket,
-                                  List<AddressDto> addresses);
+                                  BucketDto bucket);
 
     public UserDto map(Users users) {
         List<Long> favorites = users.getFavorites().stream()
@@ -35,9 +32,6 @@ public abstract class UserMapper {
                 .toList();
         UserRole userRole = users.getRole().getTitle();
         BucketDto bucketDto = bucketMapper.map(users.getBucket());
-        List<AddressDto> addressDtos = users.getAddresses().stream()
-                .map(address -> addressMapper.toDto(address))
-                .toList();
-        return toDto(users, favorites, userRole, bucketDto, addressDtos);
+        return toDto(users, favorites, userRole, bucketDto);
     }
 }

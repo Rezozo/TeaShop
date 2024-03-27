@@ -1,0 +1,2 @@
+ALTER TABLE IMAGE
+ADD COLUMN file_name text NOT NULL

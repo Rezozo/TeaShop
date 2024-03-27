@@ -1,10 +1,11 @@
 package com.tea.paradise.dto.mapper;
 
-import com.tea.paradise.dto.ImageDto;
-import com.tea.paradise.dto.PackageShortDto;
-import com.tea.paradise.dto.ProductShortDto;
-import com.tea.paradise.model.Product;
-import com.tea.paradise.model.Review;
+import com.tea.paradise.dto.*;
+import com.tea.paradise.dto.saveDto.ProductSaveDto;
+import com.tea.paradise.model.*;
+import com.tea.paradise.model.Package;
+import com.tea.paradise.repository.CategoryRepository;
+import com.tea.paradise.repository.ImagesRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +16,25 @@ import java.util.Objects;
 @Mapper
 public abstract class ProductMapper {
     @Autowired
-    ImageMapper imageMapper;
+    PackageProductMapper packageMapper;
     @Autowired
-    PackageShortMapper packageMapper;
+    CategoryRepository categoryRepository;
+    @Autowired
+    ImagesRepository imagesRepository;
 
     @Mapping(source = "packages", target = "packages")
     public abstract ProductShortDto toShortDto(Product product,
-                                               List<ImageDto> imageDtos,
                                                boolean isFavorite,
                                                List<PackageShortDto> packages,
                                                int countOfReviews,
                                                double averageRating);
 
+    @Mapping(source = "product.id", target = "id")
+    public abstract ProductFullDto toFullDto(Product product,
+                                             int countOfReviews,
+                                             double averageRating);
+
     public ProductShortDto mapShortDto(Product product, Long userId) {
-        List<ImageDto> imageDtos = product.getImages().stream()
-                .map(image -> imageMapper.toDto(image))
-                .toList();
         boolean isFavorite = product.getFavorite_users().stream()
                 .anyMatch(users -> Objects.equals(users.getId(), userId));
         List<PackageShortDto> packageShortDtos = product.getPackages().stream()
@@ -43,6 +47,45 @@ public abstract class ProductMapper {
                 .average()
                 .orElse(0.0);
 
-        return toShortDto(product, imageDtos, isFavorite, packageShortDtos, countOfReviews, averageRating);
+        return toShortDto(product, isFavorite, packageShortDtos, countOfReviews, averageRating);
+    }
+
+    public ProductFullDto mapFullDto(Product product) {
+        List<Review> reviews = product.getReviews();
+        int countOfReviews = reviews.size();
+        double averageRating = reviews.stream()
+                .mapToDouble(Review::getStars)
+                .average()
+                .orElse(0.0);
+        return toFullDto(product, countOfReviews, averageRating);
+    }
+
+    @Mapping(target = "favorite_users", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
+    @Mapping(target = "category.products", ignore = true)
+    @Mapping(source = "packages", target = "packages")
+    public abstract Product toFullModel(ProductFullDto productFullDto,
+                                        List<Package> packages);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "packages", ignore = true)
+    @Mapping(target = "favorite_users", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
+    @Mapping(source = "images", target = "images")
+    public abstract Product toSaveModel(ProductSaveDto saveDto,
+                                        Category category,
+                                        List<Image> images);
+
+    public Product mapFullModel(ProductFullDto product) {
+        List<Package> packages = product.getPackages().stream()
+                .map(packageProductDto -> packageMapper.mapToProductPackage(packageProductDto))
+                .toList();
+        return toFullModel(product, packages);
+    }
+
+    public Product mapSaveModel(ProductSaveDto saveDto) {
+        Category category = categoryRepository.findById(saveDto.getCategoryId()).orElseThrow();
+        List<Image> images = imagesRepository.findAllByIdIn(saveDto.getImages());
+        return toSaveModel(saveDto, category, images);
     }
 }

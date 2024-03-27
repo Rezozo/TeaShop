@@ -18,4 +18,6 @@ public class ProductFullDto {
     private String title;
     private String description;
     private Short discount;
+    private Integer countOfReviews;
+    private Integer averageRating;
 }

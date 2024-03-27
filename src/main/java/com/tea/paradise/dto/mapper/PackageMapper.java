@@ -2,7 +2,6 @@ package com.tea.paradise.dto.mapper;
 
 import com.tea.paradise.dto.PackageFullDto;
 import com.tea.paradise.dto.ProductShortDto;
-import com.tea.paradise.dto.VariantDto;
 import com.tea.paradise.model.Package;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,12 +17,10 @@ public abstract class PackageMapper {
     @Mapping(source = "product", target = "product")
     @Mapping(source = "pack.id", target = "id")
     public abstract PackageFullDto toFullDto(Package pack,
-                                             ProductShortDto product,
-                                             VariantDto variant);
+                                             ProductShortDto product);
 
     public PackageFullDto mapFullDto(Package pack, Long userId) {
         ProductShortDto productShortDto = productMapper.mapShortDto(pack.getProduct(), userId);
-        VariantDto variantDto = variantMapper.toDto(pack.getVariant());
-        return toFullDto(pack, productShortDto, variantDto);
+        return toFullDto(pack, productShortDto);
     }
 }
