@@ -24,7 +24,8 @@ public class ImageService {
                 .map(file -> {
                     Image image = new Image();
                     try {
-                        image.setImage(file.getBytes());
+                        image.setImage(file.getBytes())
+                                .setFileName(file.getOriginalFilename());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

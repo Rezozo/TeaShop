@@ -1,6 +1,7 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tea.paradise.enums.ParentCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,4 +35,8 @@ public class Category {
 
     @Column
     private String name;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ParentCategory parentCategory;
 }

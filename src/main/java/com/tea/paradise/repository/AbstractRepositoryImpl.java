@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Objects;
 
+import static com.tea.paradise.dto.specification.impl.ProductSpecification.ID_PATH;
+
 public abstract class AbstractRepositoryImpl<T,K,F> implements CriteriaRepository<T,K,F> {
     @PersistenceContext
     private EntityManager entityManager;
@@ -39,6 +41,7 @@ public abstract class AbstractRepositoryImpl<T,K,F> implements CriteriaRepositor
 
         if (Objects.nonNull(pagingWebCommand.getSorter())) {
             resultCriteriaQuery.orderBy(sorting.defSort(pagingWebCommand.getSorter(), cb, root));
+            resultCriteriaQuery.groupBy(root.get(ID_PATH));
         }
 
         resultCriteriaQuery.where(predicates.toArray(new Predicate[0]));

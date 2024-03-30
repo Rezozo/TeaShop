@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-@Tag(name = "Authorization operations")
+@Tag(name = "Операции регистрации/авторизации")
 @RestController
 @RequestMapping("/auth")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)

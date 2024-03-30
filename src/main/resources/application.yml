@@ -19,3 +19,4 @@ tea:
   expiration:
     token: 2592000
     refresh-token: P9W
+  bonuses-percent: 0.03

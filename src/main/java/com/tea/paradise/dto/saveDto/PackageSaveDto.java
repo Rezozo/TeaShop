@@ -1,5 +1,6 @@
 package com.tea.paradise.dto.saveDto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Setter
@@ -8,7 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PackageSaveDto {
+    @NotNull
     private Integer variantId;
+    @NotNull
     private Integer quantity;
+    @NotNull
     private Double price;
 }

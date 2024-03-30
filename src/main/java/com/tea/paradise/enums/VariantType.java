@@ -5,7 +5,7 @@ public enum VariantType {
     HUNDRED_GRAMS("100 грамм"),
     TWO_HUNDRED_GRAMS("200 грамм"),
     FIVE_HUNDRED_GRAMS("500 грамм"),
-    PACK("Упаковка");
+    PACK("Штука");
 
     private final String value;
 

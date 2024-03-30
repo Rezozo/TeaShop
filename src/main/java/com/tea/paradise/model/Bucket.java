@@ -1,6 +1,7 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +32,9 @@ public class Bucket {
     @JsonBackReference
     private Users user;
 
-    @ManyToMany
-    @JoinTable(name = "package_bucket",
-            joinColumns = @JoinColumn(name = "bucket_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_id")
-    )
-    private List<Package> packages; // TODO pick quantity
+    @OneToMany(mappedBy = "bucket")
+    @JsonManagedReference
+    private List<PackageBucket> packageBuckets;
 
     @Column(name = "last_modified_date")
     @LastModifiedDate

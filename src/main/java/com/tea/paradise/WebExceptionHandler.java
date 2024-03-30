@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 @RestControllerAdvice
 public class WebExceptionHandler {
 
+    /*
     @ExceptionHandler(Throwable.class)
     @SneakyThrows
     public ResponseEntity<String> handleThrowable(Throwable throwable) {
@@ -25,7 +26,7 @@ public class WebExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(throwable.getMessage());
     }
-
+    */
     @ExceptionHandler(ConstraintViolationException.class)
     @SneakyThrows
     public void handleConstraintViolationException(ConstraintViolationException exception, ServletWebRequest webRequest) {

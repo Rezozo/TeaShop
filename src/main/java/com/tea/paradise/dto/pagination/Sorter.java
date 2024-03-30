@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Sorter<T> {
-    T sortType;
+   private T sortType;
 }

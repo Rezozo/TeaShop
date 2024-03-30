@@ -1,6 +1,7 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,19 +25,13 @@ public class Package {
     @SequenceGenerator(name = "package_id_seq", sequenceName = "package_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "package_bucket",
-            joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "bucket_id")
-    )
-    private List<Bucket> buckets;
+    @OneToMany(mappedBy = "pack")
+    @JsonManagedReference
+    private List<PackageBucket> packageBuckets;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "package_order",
-            joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<Orders> orders;
+    @OneToMany(mappedBy = "pack")
+    @JsonManagedReference
+    private List<PackageOrder> packageOrders;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

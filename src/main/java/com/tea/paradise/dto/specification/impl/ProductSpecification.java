@@ -21,12 +21,15 @@ import java.util.Optional;
 
 @Component
 public class ProductSpecification implements Specification<Product, ProductFilter> {
-    private static final String ID_PATH = "id";
-    private static final String TITLE_PATH = "title";
-    private static final String CATEGORY_PATH = "category";
-    private static final String PACKAGE_PATH = "packages";
-    private static final String VARIANT_PATH = "variant";
-    private static final String PRICE_PATH = "price";
+    public static final String ID_PATH = "id";
+    public static final String TITLE_PATH = "title";
+    public static final String CATEGORY_PATH = "category";
+    public static final String PACKAGE_PATH = "packages";
+    public static final String VARIANT_PATH = "variant";
+    public static final String PRICE_PATH = "price";
+    public static final String REVIEW_PATH = "reviews";
+    public static final String RATE_PATH = "rate";
+    public static final String ORDER_PATH = "orders";
 
     @Override
     public List<Predicate> predicates(ProductFilter filter, CriteriaBuilder criteriaBuilder, Root<Product> root) {

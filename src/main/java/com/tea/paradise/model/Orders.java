@@ -1,6 +1,7 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,12 +41,9 @@ public class Orders {
     @JoinColumn(name = "status_id")
     private OrderStatus orderStatus;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "package_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "package_id")
-    )
-    private List<Package> packages; // TODO pick quantity
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference
+    private List<PackageOrder> packageOrders;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
