@@ -1,4 +1,4 @@
-package com.tea.paradise.dto.sorting;
+package com.tea.paradise.service.sorting;
 
 import com.tea.paradise.dto.pagination.Sorter;
 import jakarta.persistence.criteria.CriteriaBuilder;

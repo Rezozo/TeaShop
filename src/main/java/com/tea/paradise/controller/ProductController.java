@@ -7,10 +7,11 @@ import com.tea.paradise.dto.pagination.PageResult;
 import com.tea.paradise.dto.pagination.PagingCommand;
 import com.tea.paradise.dto.pagination.PagingResponse;
 import com.tea.paradise.dto.pagination.filters.ProductFilter;
-import com.tea.paradise.dto.sorting.impl.ProductSorting;
-import com.tea.paradise.dto.specification.impl.ProductSpecification;
+import com.tea.paradise.service.sorting.impl.ProductSorting;
+import com.tea.paradise.service.specification.impl.ProductSpecification;
 import com.tea.paradise.enums.ProductSortType;
 import com.tea.paradise.model.Product;
+import com.tea.paradise.model.Users;
 import com.tea.paradise.repository.ProductRepository;
 import com.tea.paradise.service.FavoriteService;
 import com.tea.paradise.service.ProductService;
@@ -23,6 +24,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Tag(name = "Product operation")
 @RestController
@@ -44,7 +47,7 @@ public class ProductController {
         return productMapper.mapFullDto(productService.getById(id));
     }
 
-    @Operation(summary = "Поиск продуктов по фильтрам/сортировке/названию") // TODO подумать, как поступить с "Новинки" и "Популярное"
+    @Operation(summary = "Поиск продуктов по фильтрам/сортировке/названию") // TODO подумать, как поступить с "Новинки" и "Популярное" и "Избранное" (тут добавить новый тип?)
     @PostMapping("actions/search-by-filter")
     public PagingResponse<ProductShortDto> findShortProduct(
             @RequestBody PagingCommand<ProductFilter, ProductSortType> pagingCommand
@@ -52,7 +55,12 @@ public class ProductController {
         Page<Product> products = productRepository.findAllWithFilters(pagingCommand, productSpecification, productSorting, null);
         return new PagingResponse<ProductShortDto>()
                 .setData(products.stream()
-                        .map(product -> productMapper.mapShortDto(product, userService.getAuthInfo().getId()))
+                        .map(product -> {
+                            Long userId = Optional.ofNullable(userService.getAuthInfo())
+                                    .map(Users::getId)
+                                    .orElse(0L);
+                            return productMapper.mapShortDto(product, userId);
+                        })
                         .toList())
                 .setPagingCommand(new PageResult()
                         .setPages(products.getTotalPages())

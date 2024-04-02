@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -42,7 +44,12 @@ public class BucketService {
         }
 
         if (existsByPack(pack.getId(), bucket.getId())) {
-            // TODO
+            bucket.getPackageBuckets().stream()
+                    .filter(packageBucket -> Objects.equals(packageBucket.getPack().getId(), pack.getId()) &&
+                            Objects.equals(packageBucket.getBucket().getId(), bucket.getId()))
+                    .findFirst()
+                    .map(packageBucket -> packageBucket.setQuantity(product.getCount()))
+                    .orElseThrow();
         } else {
             PackageBucket packageBucket = new PackageBucket()
                     .setBucket(bucket)
@@ -50,10 +57,34 @@ public class BucketService {
                     .setQuantity(product.getCount());
             bucket.getPackageBuckets().add(packageBucket);
         }
+        bucket.setModifiedDate(ZonedDateTime.now());
+
         return bucketRepository.save(bucket);
     }
 
     public boolean existsByPack(Long packId, Long bucketId) {
         return bucketRepository.existsByPackageBuckets(bucketId, packId);
+    }
+
+    public Bucket deletePackById(Long userId, Long packId) {
+        Bucket bucket = getByUserId(userId);
+        bucket.getPackageBuckets().remove(bucket.getPackageBuckets().stream()
+                .filter(packageBucket -> packageBucket.getPack().getId().equals(packId))
+                .findFirst()
+                .orElseThrow(() -> new ConstraintViolationException(
+                        MessageFormat.format("Упаковки с id: {0} не существует", packId), null)
+                )
+        );
+        bucket.setModifiedDate(ZonedDateTime.now());
+
+        return bucketRepository.save(bucket);
+    }
+
+    public Bucket clear(Long userId) {
+        Bucket bucket = getByUserId(userId);
+        bucket.getPackageBuckets().clear();
+        bucket.setModifiedDate(ZonedDateTime.now());
+
+        return bucketRepository.save(bucket);
     }
 }

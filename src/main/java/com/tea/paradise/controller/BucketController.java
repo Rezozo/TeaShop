@@ -22,7 +22,7 @@ public class BucketController {
     BucketMapper bucketMapper;
     UserService userService;
 
-    @Operation(summary = "Получение корзины (только для авторизированных пользователей)") // TODO удаление товара, очистка корзины
+    @Operation(summary = "Получение корзины (только для авторизированных пользователей)")
     @GetMapping
     public BucketDto getUserBucket() {
         return bucketMapper.map(bucketService.getByUserId(userService.getAuthInfo().getId()));
@@ -32,5 +32,17 @@ public class BucketController {
     @PostMapping
     public BucketDto addProductToBucket(@RequestBody ProductToBucketDto product) {
         return bucketMapper.map(bucketService.addProduct(userService.getAuthInfo().getId(), product));
+    }
+
+    @Operation(summary = "Удаление товара из корзины")
+    @DeleteMapping("{packId}")
+    public BucketDto deleteProductFromBucket(@PathVariable Long packId) {
+        return bucketMapper.map(bucketService.deletePackById(userService.getAuthInfo().getId(), packId));
+    }
+
+    @Operation(summary = "Полная очистка корзины", description = "После успешной оплаты")
+    @DeleteMapping("clear")
+    public BucketDto clearBucket() {
+        return bucketMapper.map(bucketService.clear(userService.getAuthInfo().getId()));
     }
 }

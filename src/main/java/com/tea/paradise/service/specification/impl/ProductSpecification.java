@@ -1,7 +1,7 @@
-package com.tea.paradise.dto.specification.impl;
+package com.tea.paradise.service.specification.impl;
 
 import com.tea.paradise.dto.pagination.filters.ProductFilter;
-import com.tea.paradise.dto.specification.Specification;
+import com.tea.paradise.service.specification.Specification;
 import com.tea.paradise.enums.VariantType;
 import com.tea.paradise.model.Category;
 import com.tea.paradise.model.Package;
@@ -29,7 +29,6 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String PRICE_PATH = "price";
     public static final String REVIEW_PATH = "reviews";
     public static final String RATE_PATH = "rate";
-    public static final String ORDER_PATH = "orders";
 
     @Override
     public List<Predicate> predicates(ProductFilter filter, CriteriaBuilder criteriaBuilder, Root<Product> root) {

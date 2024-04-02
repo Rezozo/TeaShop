@@ -1,4 +1,4 @@
-package com.tea.paradise.dto.specification;
+package com.tea.paradise.service.specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;

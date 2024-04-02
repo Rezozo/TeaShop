@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public abstract class BucketMapper {
@@ -35,7 +36,10 @@ public abstract class BucketMapper {
         double totalDiscount = 0.0;
         for (PackageBucketDto packageBucketDto : packageFullDtoList) {
             totalSum += packageBucketDto.getPrice() * packageBucketDto.getQuantityInBucket();
-            totalDiscount += packageBucketDto.getPrice() * (packageBucketDto.getProduct().getDiscount() / 100.0);
+            double finalTotalSum = totalSum;
+            totalDiscount += Optional.ofNullable(packageBucketDto.getProduct().getDiscount())
+                    .map(discount -> finalTotalSum * (discount / 100.0))
+                    .orElse(0.0);
         }
         Integer plusBonuses = (int) (totalSum * tokenExpiration);
         return toDto(bucket, packageFullDtoList, totalSum, totalDiscount, plusBonuses);

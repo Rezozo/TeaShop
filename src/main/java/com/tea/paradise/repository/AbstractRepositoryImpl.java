@@ -2,8 +2,8 @@ package com.tea.paradise.repository;
 
 import com.tea.paradise.dto.pagination.Pagination;
 import com.tea.paradise.dto.pagination.PagingCommand;
-import com.tea.paradise.dto.sorting.Sorting;
-import com.tea.paradise.dto.specification.Specification;
+import com.tea.paradise.service.sorting.Sorting;
+import com.tea.paradise.service.specification.Specification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Objects;
 
-import static com.tea.paradise.dto.specification.impl.ProductSpecification.ID_PATH;
+import static com.tea.paradise.service.specification.impl.ProductSpecification.ID_PATH;
 
 public abstract class AbstractRepositoryImpl<T,K,F> implements CriteriaRepository<T,K,F> {
     @PersistenceContext

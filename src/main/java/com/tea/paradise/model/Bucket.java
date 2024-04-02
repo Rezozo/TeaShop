@@ -32,7 +32,7 @@ public class Bucket {
     @JsonBackReference
     private Users user;
 
-    @OneToMany(mappedBy = "bucket")
+    @OneToMany(mappedBy = "bucket", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<PackageBucket> packageBuckets;
 

@@ -1,8 +1,8 @@
 package com.tea.paradise.repository;
 
 import com.tea.paradise.dto.pagination.PagingCommand;
-import com.tea.paradise.dto.sorting.Sorting;
-import com.tea.paradise.dto.specification.Specification;
+import com.tea.paradise.service.sorting.Sorting;
+import com.tea.paradise.service.specification.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
