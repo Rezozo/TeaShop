@@ -59,7 +59,7 @@ public class AuthenticationService {
             );
 
             Users user = userService.getByEmail(request.getEmail());
-            String jwtToken = jwtService.generateToken(user);
+            String jwtToken = jwtService.generateToken(user); // TODO add role into token
             String refreshToken = jwtService.refreshToken(jwtToken);
 
             return AuthenticationResponse.builder()
