@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Tag(name = "Product operation")
+@Tag(name = "Операции с продуктами")
 @RestController
 @RequestMapping("/products")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -47,7 +47,7 @@ public class ProductController {
         return productMapper.mapFullDto(productService.getById(id));
     }
 
-    @Operation(summary = "Поиск продуктов по фильтрам/сортировке/названию") // TODO подумать, как поступить с "Новинки" и "Популярное" и "Избранное" (тут добавить новый тип?)
+    @Operation(summary = "Поиск продуктов по фильтрам/сортировке/названию")
     @PostMapping("actions/search-by-filter")
     public PagingResponse<ProductShortDto> findShortProduct(
             @RequestBody PagingCommand<ProductFilter, ProductSortType> pagingCommand

@@ -5,6 +5,7 @@ import com.tea.paradise.dto.image.ImageDto;
 import com.tea.paradise.dto.packages.PackageProductDto;
 import lombok.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Setter
@@ -21,6 +22,7 @@ public class ProductFullDto {
     private Short discount;
     private Integer countOfReviews;
     private Integer averageRating;
+    private ZonedDateTime createdDate;
     private CategoryDto category;
     private List<ImageDto> images;
 }

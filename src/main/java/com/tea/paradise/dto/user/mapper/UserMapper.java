@@ -21,6 +21,7 @@ public abstract class UserMapper {
     @Mapping(source = "favorites", target = "favorites")
     @Mapping(source = "userRole", target = "role")
     @Mapping(source = "bucket", target = "bucket")
+    @Mapping(target = "ordersCount", expression = "java(users.getOrders().size())")
     public abstract UserDto toDto(Users users,
                                   List<Long> favorites,
                                   UserRole userRole,

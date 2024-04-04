@@ -13,11 +13,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Mapper
+@Mapper(imports = {ZonedDateTime.class})
 public abstract class ProductMapper {
     @Autowired
     PackageProductMapper packageMapper;
@@ -39,7 +40,7 @@ public abstract class ProductMapper {
                                              double averageRating);
 
     public ProductShortDto mapShortDto(Product product, Long userId) {
-        boolean isFavorite = product.getFavorite_users().stream()
+        boolean isFavorite = product.getFavoriteUsers().stream()
                 .anyMatch(users -> Objects.equals(users.getId(), userId));
         List<PackageShortDto> packageShortDtos = product.getPackages().stream()
                 .map(aPackage -> packageMapper.toShortDto(aPackage))
@@ -72,7 +73,7 @@ public abstract class ProductMapper {
         return toFullDto(product, countOfReviews, averageRating);
     }
 
-    @Mapping(target = "favorite_users", ignore = true)
+    @Mapping(target = "favoriteUsers", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(target = "category.products", ignore = true)
     @Mapping(target = "category.parentCategory", ignore = true)
@@ -82,9 +83,10 @@ public abstract class ProductMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "packages", ignore = true)
-    @Mapping(target = "favorite_users", ignore = true)
+    @Mapping(target = "favoriteUsers", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(source = "images", target = "images")
+    @Mapping(target = "createdDate", expression = "java(ZonedDateTime.now())")
     public abstract Product toSaveModel(ProductSaveDto saveDto,
                                         Category category,
                                         List<Image> images);

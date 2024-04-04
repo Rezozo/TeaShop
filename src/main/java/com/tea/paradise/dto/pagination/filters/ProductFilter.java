@@ -11,6 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductFilter {
+    private boolean onlyPopular;
+    private boolean onlyNew;
+    private boolean onlyFavorite;
     private Integer categoryId;
     private String searchString;
     private Boolean inStock;

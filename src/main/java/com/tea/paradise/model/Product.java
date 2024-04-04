@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -37,7 +39,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<Users> favorite_users;
+    private List<Users> favoriteUsers;
 
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
@@ -63,4 +65,8 @@ public class Product {
 
     @Column
     private Short discount;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    private ZonedDateTime createdDate;
 }

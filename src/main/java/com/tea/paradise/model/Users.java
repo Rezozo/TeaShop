@@ -1,7 +1,6 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,11 +51,8 @@ public class Users implements UserDetails {
     @JsonManagedReference
     private List<Orders> orders;
 
-    @ManyToMany
-    @JoinTable(name = "user_address",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Address> addresses;
 
     @Column

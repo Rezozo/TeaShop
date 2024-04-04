@@ -1,14 +1,12 @@
 package com.tea.paradise.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -24,13 +22,10 @@ public class Address {
     @SequenceGenerator(name = "address_id_seq", sequenceName = "address_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(name = "user_address",
-            joinColumns = @JoinColumn(name = "address_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    @JsonIgnore
-    private List<Users> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private Users user;
 
     @Column
     private String city;

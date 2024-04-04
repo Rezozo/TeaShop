@@ -1,10 +1,8 @@
 package com.tea.paradise.enums;
 
 public enum ParentCategory {
-    NEW("Новинки"),
     TEA("Чайная продукция"),
-    TEA_DISHES("Посуда для чая"),
-    POPULAR("Популярные");
+    TEA_DISHES("Посуда для чая");
 
     private final String value;
 

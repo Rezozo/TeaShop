@@ -32,5 +32,7 @@ public class UserDto {
 
     private Integer teaBonuses;
 
+    private Integer ordersCount;
+
     private ZonedDateTime createdDate;
 }

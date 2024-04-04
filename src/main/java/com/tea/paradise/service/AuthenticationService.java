@@ -59,12 +59,13 @@ public class AuthenticationService {
             );
 
             Users user = userService.getByEmail(request.getEmail());
-            String jwtToken = jwtService.generateToken(user); // TODO add role into token
+            String jwtToken = jwtService.generateToken(user);
             String refreshToken = jwtService.refreshToken(jwtToken);
 
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .refreshToken(refreshToken)
+                    .role(user.getRole().getTitle().name())
                     .build();
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Неправильный логин или пароль");

@@ -1,19 +1,17 @@
 package com.tea.paradise.service.specification.impl;
 
 import com.tea.paradise.dto.pagination.filters.ProductFilter;
+import com.tea.paradise.model.*;
+import com.tea.paradise.model.Package;
+import com.tea.paradise.service.UserService;
 import com.tea.paradise.service.specification.Specification;
 import com.tea.paradise.enums.VariantType;
-import com.tea.paradise.model.Category;
-import com.tea.paradise.model.Package;
-import com.tea.paradise.model.Product;
-import com.tea.paradise.model.Variant;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Path;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +27,12 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String PRICE_PATH = "price";
     public static final String REVIEW_PATH = "reviews";
     public static final String RATE_PATH = "rate";
+    public static final String USER_PATH = "favoriteUsers";
+    public static final String CREATED_DATE_PATH = "createdDate";
+    public static final String PRODUCT_PATH = "product";
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<Predicate> predicates(ProductFilter filter, CriteriaBuilder criteriaBuilder, Root<Product> root) {
@@ -37,8 +41,31 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         Path<Package> packagePath = root.get(PACKAGE_PATH);
         Path<Double> pricePath = packagePath.get(PRICE_PATH);
         Path<Variant> variantPath = packagePath.get(VARIANT_PATH);
+        Path<Users> usersPath = root.get(USER_PATH);
+        Path<Review> reviewPath = root.get(REVIEW_PATH);
+        Path<ZonedDateTime> zonedDateTimePath = root.get(CREATED_DATE_PATH);
 
-        String searchString = Optional.ofNullable(filter.getSearchString()).map(String::trim).orElse("" );
+        if (filter.isOnlyFavorite()) {
+            Long userId = userService.getAuthInfo().getId();
+            predicates.add(criteriaBuilder.equal(usersPath.get(ID_PATH), userId));
+        }
+
+        if (filter.isOnlyNew()) {
+            predicates.add(criteriaBuilder.between(zonedDateTimePath, ZonedDateTime.now().minusMonths(1L), ZonedDateTime.now()));
+        }
+
+        if (filter.isOnlyPopular()) { // TODO or 10 favorite
+            Subquery<Long> reviewCountSubquery  = criteriaBuilder.createQuery().subquery(Long.class);
+            Root<Review> reviewRoot  = reviewCountSubquery.from(Review.class);
+            reviewCountSubquery.select(criteriaBuilder.count(reviewRoot.get(ID_PATH)))
+                    .where(criteriaBuilder.equal(reviewRoot.get(PRODUCT_PATH), root));
+
+            predicates.add(
+                    criteriaBuilder.greaterThanOrEqualTo(reviewCountSubquery, 10L)
+            );
+        }
+
+        String searchString = Optional.ofNullable(filter.getSearchString()).map(String::trim).orElse("");
         if (!StringUtils.isEmpty(searchString)) {
             String pattern = "%" + searchString + "%";
             Predicate title = criteriaBuilder.like(root.get(TITLE_PATH), pattern);
