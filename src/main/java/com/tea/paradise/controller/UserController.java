@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class UserController { // TODO допиливаем адреса и прочее потом переходим к заказам как финал
+public class UserController {
     UserService userService;
     UserMapper userMapper;
 

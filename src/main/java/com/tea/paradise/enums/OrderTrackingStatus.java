@@ -5,8 +5,7 @@ public enum OrderTrackingStatus {
     CONFIRMED("Подтвержден"),
     IN_THE_WAY("В пути"),
     COMPLETED("Доставлен"),
-    CANCELED("Отменен"),
-    RETURN("Возврат");
+    CANCELED("Отменен");
 
     private final String value;
 

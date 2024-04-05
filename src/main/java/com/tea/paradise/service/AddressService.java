@@ -21,4 +21,12 @@ public class AddressService {
                 userService.getAuthInfo().getId()
         );
     }
+
+    public void deleteById(Long id) {
+        addressRepository.deleteById(id);
+    }
+
+    public Address saveAddress(Address saveModel) {
+        return addressRepository.save(saveModel);
+    }
 }

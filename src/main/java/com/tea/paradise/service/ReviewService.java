@@ -1,6 +1,8 @@
 package com.tea.paradise.service;
 
+import com.tea.paradise.enums.UserRole;
 import com.tea.paradise.model.Review;
+import com.tea.paradise.model.Users;
 import com.tea.paradise.repository.ReviewRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
@@ -43,7 +45,10 @@ public class ReviewService {
 
     public void deleteById(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow();
-        if (!Objects.equals(review.getUser().getId(), userService.getLoggedUserInfo().getId())) {
+        Users users = userService.getLoggedUserInfo();
+        if (!Objects.equals(review.getUser().getId(), users.getId()) &&
+                !(users.getRole().getTitle().equals(UserRole.ADMIN) ||
+                        users.getRole().getTitle().equals(UserRole.MANAGER))) {
             throw new ConstraintViolationException(
                     "Невозможно удалить отзыв другого человека", null
             );

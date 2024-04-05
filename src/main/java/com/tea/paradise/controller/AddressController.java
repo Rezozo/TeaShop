@@ -2,12 +2,16 @@ package com.tea.paradise.controller;
 
 import com.tea.paradise.dto.address.AddressDto;
 import com.tea.paradise.dto.address.mapper.AddressMapper;
+import com.tea.paradise.dto.saveDto.AddressSaveDto;
+import com.tea.paradise.model.Address;
 import com.tea.paradise.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,14 +35,15 @@ public class AddressController {
 
     @Operation(summary = "Добавление адреса пользователя")
     @PostMapping
-    public AddressDto addUserAddress() { // TODO add save dto
-        return null;
+    public AddressDto addUserAddress(@Valid @RequestBody AddressSaveDto saveDto) {
+        Address savedAddress = addressService.saveAddress(addressMapper.toSaveModel(saveDto));
+        return addressMapper.toDto(savedAddress);
     }
 
     @Operation(summary = "Удаление адреса пользователя")
     @DeleteMapping("{id}")
-    public void deleteUserAddress(@PathVariable Long id) {
-
+    public ResponseEntity<String> deleteUserAddress(@PathVariable Long id) {
+        addressService.deleteById(id);
+        return ResponseEntity.ok("Адрес успешно удалён");
     }
-
 }
