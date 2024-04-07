@@ -2,7 +2,6 @@ package com.tea.paradise.service;
 
 import com.tea.paradise.model.FavoriteEntity;
 import com.tea.paradise.repository.FavoriteRepository;
-import com.tea.paradise.repository.ProductRepository;
 import com.tea.paradise.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +14,9 @@ import java.util.Objects;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class FavoriteService {
+    ProductService productService;
     FavoriteRepository favoriteRepository;
     UserRepository userRepository;
-    ProductRepository productRepository;
 
     public String updateFavorite(Long userId, Long productId) {
         Long favoriteId = existsByUserIdAndProductId(userId, productId);
@@ -27,7 +26,7 @@ public class FavoriteService {
         } else {
             favoriteRepository.save(new FavoriteEntity()
                     .setUser(userRepository.findById(userId).orElseThrow())
-                    .setProduct(productRepository.findById(productId).orElseThrow()));
+                    .setProduct(productService.getById(productId)));
             return "Добавлено в избранное";
         }
     }
