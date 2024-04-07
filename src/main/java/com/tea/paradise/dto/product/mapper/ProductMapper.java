@@ -78,6 +78,7 @@ public abstract class ProductMapper {
     @Mapping(target = "category.products", ignore = true)
     @Mapping(target = "category.parentCategory", ignore = true)
     @Mapping(source = "packages", target = "packages")
+    @Mapping(target = "active", expression = "java(true)")
     public abstract Product toFullModel(ProductFullDto productFullDto,
                                         List<Package> packages);
 
@@ -87,6 +88,7 @@ public abstract class ProductMapper {
     @Mapping(target = "reviews", ignore = true)
     @Mapping(source = "images", target = "images")
     @Mapping(target = "createdDate", expression = "java(ZonedDateTime.now())")
+    @Mapping(target = "active", expression = "java(true)")
     public abstract Product toSaveModel(ProductSaveDto saveDto,
                                         Category category,
                                         List<Image> images);

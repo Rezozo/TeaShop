@@ -66,6 +66,9 @@ public class Product {
     @Column
     private Short discount;
 
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
     @Column(name = "created_date", updatable = false)
     @CreatedDate
     private ZonedDateTime createdDate;

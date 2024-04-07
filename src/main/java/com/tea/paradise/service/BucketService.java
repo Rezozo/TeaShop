@@ -39,6 +39,10 @@ public class BucketService {
         Package pack = packageRepository.findById(product.getPackId())
                 .orElseThrow();
 
+        if (!pack.getProduct().isActive()) {
+            throw new ConstraintViolationException("Упс, данный продукт недоступен", null);
+        }
+
         if (pack.getQuantity() < product.getCount()) {
             throw new ConstraintViolationException("Количество товаров в корзине первышает количество товаров на складе", null);
         }

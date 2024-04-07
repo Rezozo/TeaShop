@@ -30,6 +30,8 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String USER_PATH = "favoriteUsers";
     public static final String CREATED_DATE_PATH = "createdDate";
     public static final String PRODUCT_PATH = "product";
+    public static final String ACTIVE_PATH = "active";
+
 
     @Autowired
     private UserService userService;
@@ -44,6 +46,9 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         Path<Users> usersPath = root.get(USER_PATH);
         Path<Review> reviewPath = root.get(REVIEW_PATH);
         Path<ZonedDateTime> zonedDateTimePath = root.get(CREATED_DATE_PATH);
+        Path<Boolean> active = root.get(ACTIVE_PATH);
+
+        predicates.add(criteriaBuilder.isTrue(active));
 
         if (filter.isOnlyFavorite()) {
             Long userId = userService.getAuthInfo().getId();

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +34,7 @@ public class AccountingController {
     PackageMapper packageMapper;
 
     @Operation(summary = "Создание нового продукта")
-    @PostMapping("/product")
+    @PostMapping("product")
     public ProductFullDto createProduct(@Valid @RequestBody ProductSaveDto product) {
         Product productEntity = productService.create(productMapper.mapSaveModel(product));
         List<Package> packages = packageService.saveAll(product.getPackages().stream()
@@ -45,8 +46,15 @@ public class AccountingController {
     }
 
     @Operation(summary = "Добавление любых картинок для продуктов/категорий/отзывов")
-    @PostMapping("/upload-images")
+    @PostMapping("upload-images")
     public List<Long> uploadImages(@RequestParam("files") List<MultipartFile> files) {
         return imageService.saveImages(files);
+    }
+
+    @Operation(summary = "Удаление продукта")
+    @DeleteMapping("product/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+        productService.deleteById(productId);
+        return ResponseEntity.ok("Продукт успешно удалён");
     }
 }
