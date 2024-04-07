@@ -47,10 +47,6 @@ public class Users implements UserDetails {
     @JsonManagedReference
     private Bucket bucket;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Orders> orders;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Address> addresses;

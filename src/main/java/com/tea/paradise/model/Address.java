@@ -1,12 +1,15 @@
 package com.tea.paradise.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +30,10 @@ public class Address {
     @JsonBackReference
     private Users user;
 
+    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Orders> orders;
+
     @Column
     private String city;
 
@@ -44,4 +51,7 @@ public class Address {
 
     @Column(name = "intercom_code")
     private String intercomCode;
+
+    @Column(name = "active", nullable = false)
+    private boolean active;
 }

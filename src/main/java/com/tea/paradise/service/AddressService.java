@@ -22,8 +22,15 @@ public class AddressService {
         );
     }
 
+    public Address getById(Long id) {
+        return addressRepository.findById(id)
+                .orElseThrow();
+    }
+
     public void deleteById(Long id) {
-        addressRepository.deleteById(id);
+        Address address = getById(id);
+        address.setActive(false);
+        addressRepository.save(address);
     }
 
     public Address saveAddress(Address saveModel) {

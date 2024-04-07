@@ -29,12 +29,13 @@ public class Orders {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "recipient_id")
     @JsonBackReference
-    private Users client;
+    private Recipient recipient;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name ="address_id")
+    @JsonBackReference
     private Address address;
 
     @ManyToOne
