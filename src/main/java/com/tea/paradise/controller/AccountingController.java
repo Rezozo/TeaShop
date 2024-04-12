@@ -4,6 +4,7 @@ import com.tea.paradise.dto.product.ProductFullDto;
 import com.tea.paradise.dto.packages.mapper.PackageMapper;
 import com.tea.paradise.dto.product.mapper.ProductMapper;
 import com.tea.paradise.dto.saveDto.ProductSaveDto;
+import com.tea.paradise.model.Image;
 import com.tea.paradise.model.Package;
 import com.tea.paradise.model.Product;
 import com.tea.paradise.service.ImageService;
@@ -48,7 +49,9 @@ public class AccountingController {
     @Operation(summary = "Добавление любых картинок для продуктов/категорий/отзывов")
     @PostMapping("upload-images")
     public List<Long> uploadImages(@RequestParam("files") List<MultipartFile> files) {
-        return imageService.saveImages(files);
+        return imageService.saveImages(files).stream()
+                .map(Image::getId)
+                .toList();
     }
 
     @Operation(summary = "Удаление продукта")

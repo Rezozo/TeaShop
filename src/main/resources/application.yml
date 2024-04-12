@@ -20,3 +20,10 @@ tea:
     token: 2592000
     refresh-token: P9W
   bonuses-percent: 0.03
+
+s3config:
+  endpoint: "your-endpoint"
+  region: "your-region"
+  bucket: "your-bucket"
+  access: "your-access-id"
+  key: "your-secret-key"

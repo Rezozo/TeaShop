@@ -21,9 +21,6 @@ public class Image {
     @SequenceGenerator(name = "image_id_seq", sequenceName = "image_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "file_name")
-    private String fileName;
-
-    @Column
-    private byte[] image;
+    @Column(name = "image_url")
+    private String imageUrl;
 }

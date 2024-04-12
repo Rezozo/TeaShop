@@ -11,11 +11,16 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import static com.tea.paradise.config.CacheConfig.BUCKET_INFO;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -30,10 +35,12 @@ public class BucketService {
                 .setModifiedDate(ZonedDateTime.now()));
     }
 
+    @Cacheable(value = BUCKET_INFO, key = "'bucket:' + #id")
     public Bucket getByUserId(Long id) {
         return bucketRepository.findBucketByUser_Id(id);
     }
 
+    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #id")
     public Bucket addProduct(Long userId, ProductToBucketDto product) {
         Bucket bucket = getByUserId(userId);
         Package pack = packageRepository.findById(product.getPackId())
@@ -70,6 +77,7 @@ public class BucketService {
         return bucketRepository.existsByPackageBuckets(bucketId, packId);
     }
 
+    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #id")
     public Bucket deletePackById(Long userId, Long packId) {
         Bucket bucket = getByUserId(userId);
         bucket.getPackageBuckets().remove(bucket.getPackageBuckets().stream()
@@ -84,6 +92,7 @@ public class BucketService {
         return bucketRepository.save(bucket);
     }
 
+    @CacheEvict(value = BUCKET_INFO, key = "'bucket:' + #id")
     public Bucket clear(Long userId) {
         Bucket bucket = getByUserId(userId);
         bucket.getPackageBuckets().clear();

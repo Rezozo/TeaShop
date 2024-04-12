@@ -32,7 +32,6 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String PRODUCT_PATH = "product";
     public static final String ACTIVE_PATH = "active";
 
-
     @Autowired
     private UserService userService;
 
@@ -44,7 +43,6 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         Path<Double> pricePath = packagePath.get(PRICE_PATH);
         Path<Variant> variantPath = packagePath.get(VARIANT_PATH);
         Path<Users> usersPath = root.get(USER_PATH);
-        Path<Review> reviewPath = root.get(REVIEW_PATH);
         Path<ZonedDateTime> zonedDateTimePath = root.get(CREATED_DATE_PATH);
         Path<Boolean> active = root.get(ACTIVE_PATH);
 
@@ -59,14 +57,23 @@ public class ProductSpecification implements Specification<Product, ProductFilte
             predicates.add(criteriaBuilder.between(zonedDateTimePath, ZonedDateTime.now().minusMonths(1L), ZonedDateTime.now()));
         }
 
-        if (filter.isOnlyPopular()) { // TODO or 10 favorite
+        if (filter.isOnlyPopular()) {
             Subquery<Long> reviewCountSubquery  = criteriaBuilder.createQuery().subquery(Long.class);
             Root<Review> reviewRoot  = reviewCountSubquery.from(Review.class);
             reviewCountSubquery.select(criteriaBuilder.count(reviewRoot.get(ID_PATH)))
                     .where(criteriaBuilder.equal(reviewRoot.get(PRODUCT_PATH), root));
 
+            Subquery<Long> favoriteCountSubquery = criteriaBuilder.createQuery().subquery(Long.class);
+            Root<Product> productRoot = favoriteCountSubquery.from(Product.class);
+            Join<Product, Users> favoriteJoin = productRoot.join(USER_PATH, JoinType.LEFT);
+            favoriteCountSubquery.select(criteriaBuilder.count(favoriteJoin.get(ID_PATH)))
+                    .where(criteriaBuilder.equal(productRoot, root));
+
             predicates.add(
-                    criteriaBuilder.greaterThanOrEqualTo(reviewCountSubquery, 10L)
+                    criteriaBuilder.or(
+                            criteriaBuilder.greaterThanOrEqualTo(reviewCountSubquery, 5L),
+                            criteriaBuilder.greaterThanOrEqualTo(favoriteCountSubquery, 5L)
+                    )
             );
         }
 

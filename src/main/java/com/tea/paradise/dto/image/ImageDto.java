@@ -9,6 +9,5 @@ import lombok.*;
 @Builder
 public class ImageDto {
     private Long id;
-    private byte[] image;
-    private String fileName;
+    private String imageUrl;
 }
