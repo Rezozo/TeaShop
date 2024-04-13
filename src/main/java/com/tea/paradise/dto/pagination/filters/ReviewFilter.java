@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ReviewFilter {
-    private boolean byCurrentUser;
+    private Boolean byCurrentUser;
+    private Long productId;
 }

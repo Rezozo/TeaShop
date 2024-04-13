@@ -1,15 +1,17 @@
 package com.tea.paradise.dto.packages.mapper;
 
+import com.tea.paradise.dto.packages.PackageOrderDto;
 import com.tea.paradise.dto.product.mapper.ProductMapper;
 import com.tea.paradise.dto.saveDto.PackageSaveDto;
 import com.tea.paradise.dto.variant.mapper.VariantMapper;
+import com.tea.paradise.model.*;
 import com.tea.paradise.model.Package;
-import com.tea.paradise.model.Product;
-import com.tea.paradise.model.Variant;
 import com.tea.paradise.repository.VariantRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Objects;
 
 @Mapper
 public abstract class PackageMapper {
@@ -32,5 +34,23 @@ public abstract class PackageMapper {
     public Package mapSaveModel(PackageSaveDto packageSaveDto, Product product) {
         Variant variant = variantRepository.findById(packageSaveDto.getVariantId()).orElseThrow();
         return toSaveModel(packageSaveDto, variant, product);
+    }
+
+    @Mapping(source = "packageOrder.pack.product.title", target = "productTitle")
+    public abstract PackageOrderDto toOrderDto(PackageOrder packageOrder,
+                                               String imageUrl,
+                                               String type,
+                                               Double price);
+
+    public PackageOrderDto mapToOrderDto(PackageOrder packageOrder) {
+        String imageUrl = packageOrder.getPack().getProduct().getImages().stream()
+                .findFirst().map(Image::getImageUrl)
+                .orElseThrow();
+        String type = packageOrder.getPack().getVariant().getTitle().name();
+        Double price = packageOrder.getPack().getPrice();
+        if (Objects.nonNull(packageOrder.getPack().getProduct().getDiscount())) {
+            price -= packageOrder.getPack().getPrice() * ((double) packageOrder.getPack().getProduct().getDiscount() / 100);
+        }
+        return toOrderDto(packageOrder, imageUrl, type, price);
     }
 }

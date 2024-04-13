@@ -25,10 +25,14 @@ public class PackageService {
         List<String> invalidProductsTitle = new ArrayList<>();
         for (ShortPackageDto validateProduct : shortPackageDtos) {
             Package pack = packageRepository.findById(validateProduct.getPackageId()).orElseThrow();
-            if (pack.getQuantity() >= validateProduct.getCount()) {
+            if (pack.getQuantity() <= validateProduct.getCount() || !pack.getProduct().isActive()) {
                 invalidProductsTitle.add(pack.getProduct().getTitle());
             }
         }
         return invalidProductsTitle;
+    }
+
+    public Package getById(Long id) {
+        return packageRepository.findById(id).orElseThrow();
     }
 }

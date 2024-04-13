@@ -40,7 +40,7 @@ public class BucketService {
         return bucketRepository.findBucketByUser_Id(id);
     }
 
-    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #id")
+    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #userId")
     public Bucket addProduct(Long userId, ProductToBucketDto product) {
         Bucket bucket = getByUserId(userId);
         Package pack = packageRepository.findById(product.getPackId())
@@ -77,7 +77,7 @@ public class BucketService {
         return bucketRepository.existsByPackageBuckets(bucketId, packId);
     }
 
-    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #id")
+    @CachePut(value = BUCKET_INFO, key = "'bucket:' + #userId")
     public Bucket deletePackById(Long userId, Long packId) {
         Bucket bucket = getByUserId(userId);
         bucket.getPackageBuckets().remove(bucket.getPackageBuckets().stream()
@@ -92,7 +92,7 @@ public class BucketService {
         return bucketRepository.save(bucket);
     }
 
-    @CacheEvict(value = BUCKET_INFO, key = "'bucket:' + #id")
+    @CacheEvict(value = BUCKET_INFO, key = "'bucket:' + #userId")
     public Bucket clear(Long userId) {
         Bucket bucket = getByUserId(userId);
         bucket.getPackageBuckets().clear();

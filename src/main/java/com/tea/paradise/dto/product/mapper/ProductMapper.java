@@ -73,15 +73,6 @@ public abstract class ProductMapper {
         return toFullDto(product, countOfReviews, averageRating);
     }
 
-    @Mapping(target = "favoriteUsers", ignore = true)
-    @Mapping(target = "reviews", ignore = true)
-    @Mapping(target = "category.products", ignore = true)
-    @Mapping(target = "category.parentCategory", ignore = true)
-    @Mapping(source = "packages", target = "packages")
-    @Mapping(target = "active", expression = "java(true)")
-    public abstract Product toFullModel(ProductFullDto productFullDto,
-                                        List<Package> packages);
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "packages", ignore = true)
     @Mapping(target = "favoriteUsers", ignore = true)
@@ -92,13 +83,6 @@ public abstract class ProductMapper {
     public abstract Product toSaveModel(ProductSaveDto saveDto,
                                         Category category,
                                         List<Image> images);
-
-    public Product mapFullModel(ProductFullDto product) {
-        List<Package> packages = product.getPackages().stream()
-                .map(packageProductDto -> packageMapper.mapToProductPackage(packageProductDto))
-                .toList();
-        return toFullModel(product, packages);
-    }
 
     public Product mapSaveModel(ProductSaveDto saveDto) {
         Category category = categoryRepository.findById(saveDto.getCategoryId()).orElseThrow();

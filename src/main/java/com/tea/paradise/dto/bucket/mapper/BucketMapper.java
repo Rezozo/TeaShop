@@ -15,7 +15,7 @@ import java.util.Optional;
 public abstract class BucketMapper {
 
     @Value("${tea.bonuses-percent}")
-    private double tokenExpiration;
+    private double bonusPercent;
 
     @Autowired
     PackageBucketMapper packageBucketMapper;
@@ -40,8 +40,9 @@ public abstract class BucketMapper {
             totalDiscount += Optional.ofNullable(packageBucketDto.getProduct().getDiscount())
                     .map(discount -> finalTotalSum * (discount / 100.0))
                     .orElse(0.0);
+            totalSum -= totalDiscount;
         }
-        Integer plusBonuses = (int) (totalSum * tokenExpiration);
+        Integer plusBonuses = (int) (totalSum * bonusPercent);
         return toDto(bucket, packageFullDtoList, totalSum, totalDiscount, plusBonuses);
     }
 }

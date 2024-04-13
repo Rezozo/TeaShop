@@ -67,8 +67,7 @@ public class ImageService {
                         InputStream inputStream = file.getInputStream();
                         s3client.putObject(bucket, file.getOriginalFilename(), inputStream, metadata);
                         String url = s3client.getUrl(bucket, file.getOriginalFilename()).toExternalForm();
-                        Image image = imagesRepository.save(new Image().setImageUrl(url));
-                        return image;
+                        return imagesRepository.save(new Image().setImageUrl(url));
                     } catch (IOException e) {
                         throw new ConstraintViolationException("Невозможно сохранить изображение, попробуйте снова позже", null);
                     }

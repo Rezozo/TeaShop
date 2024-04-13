@@ -32,4 +32,7 @@ public class PackageOrder {
 
     @Column
     private int quantity;
+
+    @Column(name = "fixed_price")
+    private Double fixedPrice;
 }

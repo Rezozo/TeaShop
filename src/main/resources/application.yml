@@ -19,7 +19,7 @@ tea:
   expiration:
     token: 2592000
     refresh-token: P9W
-  bonuses-percent: 0.03
+  bonuses-percent: 0.05
 
 s3config:
   endpoint: "your-endpoint"

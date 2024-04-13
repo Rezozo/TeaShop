@@ -1,6 +1,7 @@
 package com.tea.paradise.service.specification.impl;
 
 import com.tea.paradise.dto.pagination.filters.ReviewFilter;
+import com.tea.paradise.model.Product;
 import com.tea.paradise.service.specification.Specification;
 import com.tea.paradise.model.Review;
 import com.tea.paradise.model.Users;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.tea.paradise.service.specification.impl.ProductSpecification.ID_PATH;
+import static com.tea.paradise.service.specification.impl.ProductSpecification.PRODUCT_PATH;
 
 @Component
 public class ReviewSpecification implements Specification<Review, ReviewFilter> {
@@ -26,9 +31,13 @@ public class ReviewSpecification implements Specification<Review, ReviewFilter> 
     @Override
     public List<Predicate> predicates(ReviewFilter filter, CriteriaBuilder criteriaBuilder, Root<Review> root) {
         List<Predicate> predicates = new ArrayList<>();
-        if (filter.isByCurrentUser()) {
+        if (filter.getByCurrentUser()) {
             Path<Users> userPath  = root.get(USER_PATH);
             predicates.add(criteriaBuilder.equal(userPath.get(ProductSpecification.ID_PATH), userService.getAuthInfo().getId()));
+        }
+        if (Objects.nonNull(filter.getProductId())) {
+            Path<Product> productPath = root.get(PRODUCT_PATH);
+            predicates.add(criteriaBuilder.equal(productPath.get(ID_PATH), filter.getProductId()));
         }
 
         return predicates;

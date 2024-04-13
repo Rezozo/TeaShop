@@ -1,4 +1,4 @@
-package com.tea.paradise.dto.order;
+package com.tea.paradise.dto.saveDto;
 
 import com.tea.paradise.dto.packages.ShortPackageDto;
 import com.tea.paradise.dto.recipient.RecipientDto;
@@ -15,5 +15,5 @@ public class ClientOrderSaveDto {
     private RecipientDto recipientDto;
     private Long addressId;
     private List<ShortPackageDto> shortPackageDtos;
-    private boolean isPayWithBonuses;
+    private Boolean isPayWithBonuses;
 }

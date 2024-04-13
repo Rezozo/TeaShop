@@ -28,7 +28,7 @@ public class Orders {
     @SequenceGenerator(name = "orders_id_seq", sequenceName = "orders_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipient_id")
     @JsonBackReference
     private Recipient recipient;
