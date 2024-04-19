@@ -21,7 +21,7 @@ public class ProductFullDto {
     private String description;
     private Short discount;
     private Integer countOfReviews;
-    private Integer averageRating;
+    private Double averageRating;
     private ZonedDateTime createdDate;
     private CategoryDto category;
     private List<ImageDto> images;

@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ShortPackageDto {
+public class ShortOrderPackageDto {
     private Long packageId;
     private Integer count;
 }

@@ -1,6 +1,6 @@
 package com.tea.paradise.service;
 
-import com.tea.paradise.dto.packages.ShortPackageDto;
+import com.tea.paradise.dto.packages.ShortOrderPackageDto;
 import com.tea.paradise.model.Package;
 import com.tea.paradise.repository.PackageRepository;
 import lombok.AccessLevel;
@@ -21,9 +21,9 @@ public class PackageService {
         return packageRepository.saveAll(packages);
     }
 
-    public List<String> isValid(List<ShortPackageDto> shortPackageDtos) {
+    public List<String> isValid(List<ShortOrderPackageDto> shortOrderPackageDtos) {
         List<String> invalidProductsTitle = new ArrayList<>();
-        for (ShortPackageDto validateProduct : shortPackageDtos) {
+        for (ShortOrderPackageDto validateProduct : shortOrderPackageDtos) {
             Package pack = packageRepository.findById(validateProduct.getPackageId()).orElseThrow();
             if (pack.getQuantity() <= validateProduct.getCount() || !pack.getProduct().isActive()) {
                 invalidProductsTitle.add(pack.getProduct().getTitle());

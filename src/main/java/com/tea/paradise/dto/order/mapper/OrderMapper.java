@@ -53,7 +53,7 @@ public abstract class OrderMapper {
     public Orders mapToSaveModel(ClientOrderSaveDto orderSaveDto, Users users) {
         AtomicReference<Double> totalCost = new AtomicReference<>(0.0);
 
-        List<PackageOrder> packageOrders = orderSaveDto.getShortPackageDtos().stream()
+        List<PackageOrder> packageOrders = orderSaveDto.getShortOrderPackageDtos().stream()
                 .map(shortPackageDto -> {
                     Package pack = packageService.getById(shortPackageDto.getPackageId());
                     Double price = pack.getPrice();

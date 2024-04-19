@@ -8,7 +8,7 @@ import com.tea.paradise.dto.pagination.PagingCommand;
 import com.tea.paradise.dto.pagination.PagingResponse;
 import com.tea.paradise.dto.pagination.filters.OrderFilter;
 import com.tea.paradise.dto.saveDto.ClientOrderSaveDto;
-import com.tea.paradise.dto.packages.ShortPackageDto;
+import com.tea.paradise.dto.packages.ShortOrderPackageDto;
 import com.tea.paradise.enums.OrderSortType;
 import com.tea.paradise.model.Orders;
 import com.tea.paradise.model.Users;
@@ -67,8 +67,8 @@ public class OrderController {
 
     @Operation(summary = "Валидация заказа (проверка наличия на складе) перед оплатой")
     @PostMapping("/validate")
-    public ResponseEntity<String> isValidOrder(@RequestBody List<ShortPackageDto> shortPackageDtos) {
-        List<String> invalidProducts = packageService.isValid(shortPackageDtos);
+    public ResponseEntity<String> isValidOrder(@RequestBody List<ShortOrderPackageDto> shortOrderPackageDtos) {
+        List<String> invalidProducts = packageService.isValid(shortOrderPackageDtos);
 
         if (invalidProducts.isEmpty()) {
             return ResponseEntity.ok("Все товары в наличии");
