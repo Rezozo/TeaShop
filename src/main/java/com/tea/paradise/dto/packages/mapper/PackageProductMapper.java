@@ -8,9 +8,8 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public abstract class PackageProductMapper {
-    @Mapping(source = "pack.variant.title", target = "variantName")
+    @Mapping(source = "pack.variant.title", target = "variantType")
     public abstract PackageShortDto toShortDto(Package pack);
-
 
     public abstract PackageProductDto toProductDto(Package pack);
 

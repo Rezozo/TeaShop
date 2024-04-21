@@ -6,6 +6,7 @@ import com.tea.paradise.dto.recipient.RecipientDto;
 import com.tea.paradise.enums.OrderTrackingStatus;
 import lombok.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Setter
@@ -17,6 +18,7 @@ public class OrderDto {
     private Long id;
     private RecipientDto recipient;
     private OrderTrackingStatus status;
+    private ZonedDateTime createdDate;
     private List<PackageOrderDto> packageOrders;
     private String trackNumber;
     private AddressDto address;

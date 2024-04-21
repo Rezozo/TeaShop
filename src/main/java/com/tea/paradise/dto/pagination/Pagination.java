@@ -10,6 +10,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class Pagination {
-    Integer currentPage;
-    Integer pageSize;
+    private Integer currentPage;
+    private Integer pageSize;
 }

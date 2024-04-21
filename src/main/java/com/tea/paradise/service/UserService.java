@@ -55,7 +55,7 @@ public class UserService {
         current.setSurname(saveDto.getSurname());
         current.setEmail(saveDto.getEmail());
         if (existsByEmail(saveDto.getEmail()) && !Objects.equals(saveDto.getEmail(), current.getEmail())) {
-            throw new ConstraintViolationException("Пользователь с электронной почтой " + saveDto.getEmail() + " уже существует", null);
+            throw new ConstraintViolationException("Пользователь с данной электронной почтой уже существует", null);
         }
         if (Strings.isNotEmpty(saveDto.getPassword())) {
             current.setPassword(passwordEncoder.encode(saveDto.getPassword()));

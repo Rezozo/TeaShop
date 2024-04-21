@@ -1,5 +1,6 @@
 package com.tea.paradise.dto.packages;
 
+import com.tea.paradise.enums.VariantType;
 import lombok.*;
 
 @Setter
@@ -9,6 +10,6 @@ import lombok.*;
 @Builder
 public class PackageShortDto {
     private Long id;
-    private String variantName;
+    private VariantType variantType;
     private Double price;
 }

@@ -16,7 +16,7 @@ public class RegistrationRequest {
     private String name;
     @NotNull(message = "Адрес электронной почты должен быть указан!")
     @NotBlank(message = "Адрес электронной почты не должен быть пустым")
-    @Size(max = 70, message = "Адрес электронной почты не должен превышать 255 символов")
+    @Size(max = 255, message = "Адрес электронной почты не должен превышать 255 символов")
     private String email;
     @NotNull
     @NotBlank(message = "Пароль не должен быть пустым")
