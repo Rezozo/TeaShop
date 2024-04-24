@@ -35,12 +35,12 @@ public abstract class BucketMapper {
         double totalSum = 0.0;
         double totalDiscount = 0.0;
         for (PackageBucketDto packageBucketDto : packageFullDtoList) {
-            totalSum += packageBucketDto.getPrice() * packageBucketDto.getQuantityInBucket();
-            double finalTotalSum = totalSum;
-            totalDiscount += Optional.ofNullable(packageBucketDto.getProduct().getDiscount())
-                    .map(discount -> finalTotalSum * (discount / 100.0))
+            double sum = packageBucketDto.getPrice() * packageBucketDto.getQuantityInBucket();
+            double discount = Optional.ofNullable(packageBucketDto.getProduct().getDiscount())
+                    .map(d -> sum * (d / 100.0))
                     .orElse(0.0);
-            totalSum -= totalDiscount;
+            totalDiscount += discount;
+            totalSum += sum - discount;
         }
         Integer plusBonuses = (int) (totalSum * bonusPercent);
         return toDto(bucket, packageFullDtoList, totalSum, totalDiscount, plusBonuses);

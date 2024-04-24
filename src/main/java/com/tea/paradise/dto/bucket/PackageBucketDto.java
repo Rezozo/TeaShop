@@ -13,5 +13,6 @@ public class PackageBucketDto {
     private VariantDto variant;
     private Double price;
     private ProductBucketDto product;
+    private Integer plusTeaBonuses;
     private Integer quantityInBucket;
 }

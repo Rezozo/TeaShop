@@ -37,8 +37,8 @@ public class ProductSorting implements Sorting<Product, ProductSortType> {
                 orders.add(criteriaBuilder.desc(productCount));
                 break;
             case MORE_RATE:
-                Join<Product, Review> reviewJoin = root.join(ProductSpecification.REVIEW_PATH);
-                Expression<Double> avgRate = criteriaBuilder.avg(reviewJoin.get(ProductSpecification.RATE_PATH));
+                Join<Product, Review> reviewJoin = root.join(ProductSpecification.REVIEW_PATH, JoinType.LEFT);
+                Expression<Double> avgRate = criteriaBuilder.coalesce(criteriaBuilder.avg(reviewJoin.get(ProductSpecification.STARS_PATH)), 0.0);
                 orders.add(criteriaBuilder.desc(avgRate));
                 break;
         }

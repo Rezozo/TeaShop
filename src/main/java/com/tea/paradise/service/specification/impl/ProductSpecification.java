@@ -26,7 +26,7 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String VARIANT_PATH = "variant";
     public static final String PRICE_PATH = "price";
     public static final String REVIEW_PATH = "reviews";
-    public static final String RATE_PATH = "rate";
+    public static final String STARS_PATH = "stars";
     public static final String USER_PATH = "favoriteUsers";
     public static final String CREATED_DATE_PATH = "createdDate";
     public static final String PRODUCT_PATH = "product";
