@@ -17,7 +17,6 @@ public class ReviewSaveDto {
     private Long id;
     @NotNull
     private Long productId;
-    @NotEmpty
     private List<Long> images;
     @NotNull
     @Min(value = 1)
