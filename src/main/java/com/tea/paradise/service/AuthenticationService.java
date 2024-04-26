@@ -59,6 +59,9 @@ public class AuthenticationService {
             );
 
             Users user = userService.getByEmail(request.getEmail());
+            if(user.isDeleted()) {
+                throw new ConstraintViolationException("Аккаунт удалён", null);
+            }
             String jwtToken = jwtService.generateToken(user);
             String refreshToken = jwtService.refreshToken(jwtToken);
 

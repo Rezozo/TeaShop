@@ -26,7 +26,7 @@ public abstract class UserMapper {
                                   List<Long> favorites,
                                   UserRole userRole,
                                   BucketDto bucket,
-                                  Long ordersCount);
+                                  Integer ordersCount);
 
     public UserDto map(Users users) {
         List<Long> favorites = users.getFavorites().stream()
@@ -34,9 +34,9 @@ public abstract class UserMapper {
                 .toList();
         UserRole userRole = users.getRole().getTitle();
         BucketDto bucketDto = bucketMapper.map(users.getBucket());
-        Long ordersCount = users.getAddresses().stream()
-                .map(address -> address.getOrders().size())
-                .count();
+        Integer ordersCount = users.getAddresses().stream()
+                .mapToInt(address -> address.getOrders().size())
+                .sum();
         return toDto(users, favorites, userRole, bucketDto, ordersCount);
     }
 }

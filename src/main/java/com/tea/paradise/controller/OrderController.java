@@ -69,7 +69,6 @@ public class OrderController {
     @PostMapping("/validate")
     public ResponseEntity<String> isValidOrder(@RequestBody List<ShortOrderPackageDto> shortOrderPackageDtos) {
         List<String> invalidProducts = packageService.isValid(shortOrderPackageDtos);
-
         if (invalidProducts.isEmpty()) {
             return ResponseEntity.ok("Все товары в наличии");
         }

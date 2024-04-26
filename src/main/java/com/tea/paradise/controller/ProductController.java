@@ -53,14 +53,12 @@ public class ProductController {
             @RequestBody PagingCommand<ProductFilter, ProductSortType> pagingCommand
     ) {
         Page<Product> products = productRepository.findAllWithFilters(pagingCommand, productSpecification, productSorting, null);
+        Long userId = Optional.ofNullable(userService.getAuthInfo())
+                .map(Users::getId)
+                .orElse(0L);
         return new PagingResponse<ProductShortDto>()
                 .setData(products.stream()
-                        .map(product -> {
-                            Long userId = Optional.ofNullable(userService.getAuthInfo())
-                                    .map(Users::getId)
-                                    .orElse(0L);
-                            return productMapper.mapShortDto(product, userId);
-                        })
+                        .map(product -> productMapper.mapShortDto(product, userId))
                         .toList())
                 .setPagingCommand(new PageResult()
                         .setPages(products.getTotalPages())

@@ -80,7 +80,7 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         String searchString = Optional.ofNullable(filter.getSearchString()).map(String::trim).orElse("");
         if (!StringUtils.isEmpty(searchString)) {
             String pattern = "%" + searchString + "%";
-            Predicate title = criteriaBuilder.like(root.get(TITLE_PATH), pattern);
+            Predicate title = criteriaBuilder.like(criteriaBuilder.upper(root.get(TITLE_PATH)), pattern.toUpperCase());
             predicates.add(criteriaBuilder.or(title));
         }
 

@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -45,10 +44,6 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public List<Users> getAll() {
-        return userRepository.findAll();
-    }
-
     public Users updateUserInfo(UserSaveDto saveDto) {
         Users current = getLoggedUserInfo();
         current.setName(saveDto.getName());
@@ -65,6 +60,7 @@ public class UserService {
 
     public void deleteAccount() {
         Users current = getLoggedUserInfo();
-        userRepository.deleteById(current.getId());
+        current.setDeleted(true);
+        userRepository.save(current);
     }
 }

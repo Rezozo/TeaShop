@@ -37,7 +37,7 @@ public class WebExceptionHandler {
     }
 
     @SneakyThrows
-    private <E extends Exception> ResponseEntity<String> sendErrorResponse(ServletWebRequest webRequest, String message, int status) {
+    private ResponseEntity<String> sendErrorResponse(ServletWebRequest webRequest, String message, int status) {
         if (webRequest.getResponse() == null) {
             return ResponseEntity
                     .internalServerError()

@@ -25,7 +25,7 @@ public class ProductService {
          return productRepository.save(productEntity);
      }
 
-     //@Cacheable(value = PRODUCT_INFO, key = "'products:' + #productId") TODO fix it late (review save)
+     @Cacheable(value = PRODUCT_INFO, key = "'products:' + #productId")
      public Product getById(Long productId) {
          Product product = productRepository.findById(productId).orElseThrow();
          if (!product.isActive()) {
