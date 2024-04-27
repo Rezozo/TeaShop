@@ -1,6 +1,7 @@
 package com.tea.paradise.dto.packages.mapper;
 
 import com.tea.paradise.dto.packages.PackageOrderDto;
+import com.tea.paradise.dto.product.ProductAccountingDto;
 import com.tea.paradise.dto.product.mapper.ProductMapper;
 import com.tea.paradise.dto.saveDto.PackageSaveDto;
 import com.tea.paradise.dto.variant.mapper.VariantMapper;
@@ -11,6 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Objects;
 
 @Mapper
@@ -52,5 +54,23 @@ public abstract class PackageMapper {
             price -= packageOrder.getPack().getPrice() * ((double) packageOrder.getPack().getProduct().getDiscount() / 100);
         }
         return toOrderDto(packageOrder, imageUrl, type, price);
+    }
+
+    @Mapping(source = "quantity", target = "quantity")
+    public abstract ProductAccountingDto toAccountingDto(Product product,
+                                                         Integer orderCount,
+                                                         Integer quantity);
+
+    public ProductAccountingDto mapToAccountingDto(Product product) {
+        List<Package> packageList = product.getPackages();
+        Integer orderCount = packageList.stream()
+                .mapToInt(value -> value.getPackageOrders().stream()
+                        .mapToInt(PackageOrder::getQuantity)
+                        .sum())
+                .sum();
+        Integer quantity = packageList.stream()
+                .mapToInt(Package::getQuantity)
+                .sum();
+        return toAccountingDto(product, orderCount, quantity);
     }
 }

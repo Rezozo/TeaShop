@@ -21,7 +21,7 @@ public class ProductService {
     PackageBucketRepository packageBucketRepository;
     ProductRepository productRepository;
 
-     public Product create(Product productEntity) {
+     public Product createOrUpdate(Product productEntity) {
          return productRepository.save(productEntity);
      }
 

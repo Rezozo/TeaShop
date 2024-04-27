@@ -17,6 +17,7 @@ public class ProductFilter {
     private Integer categoryId;
     private String searchString;
     private Boolean inStock;
+    private Boolean isActive;
     private Double minPrice;
     private Double maxPrice;
     private List<VariantType> variantTypes;

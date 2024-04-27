@@ -31,6 +31,8 @@ public class ProductSpecification implements Specification<Product, ProductFilte
     public static final String CREATED_DATE_PATH = "createdDate";
     public static final String PRODUCT_PATH = "product";
     public static final String ACTIVE_PATH = "active";
+    public static final String QUANTITY_PATH = "quantity";
+    public static final String PACKAGE_ORDERS_PATH = "packageOrders";
 
     @Autowired
     private UserService userService;
@@ -46,7 +48,12 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         Path<ZonedDateTime> zonedDateTimePath = root.get(CREATED_DATE_PATH);
         Path<Boolean> active = root.get(ACTIVE_PATH);
 
-        predicates.add(criteriaBuilder.isTrue(active));
+        if (Objects.nonNull(filter.getIsActive())) {
+            if (filter.getIsActive())
+                predicates.add(criteriaBuilder.isTrue(active));
+        } else {
+            predicates.add(criteriaBuilder.isTrue(active));
+        }
 
         if (filter.isOnlyFavorite()) {
             Long userId = userService.getAuthInfo().getId();
