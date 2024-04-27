@@ -8,11 +8,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import static com.tea.paradise.config.CacheConfig.PRODUCT_INFO;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -25,7 +21,6 @@ public class ProductService {
          return productRepository.save(productEntity);
      }
 
-     @Cacheable(value = PRODUCT_INFO, key = "'products:' + #productId")
      public Product getById(Long productId) {
          Product product = productRepository.findById(productId).orElseThrow();
          if (!product.isActive()) {
@@ -35,7 +30,6 @@ public class ProductService {
      }
 
      @Transactional
-     @CacheEvict(value = PRODUCT_INFO, key = "'products:' + #productId")
      public void deleteById(Long productId) {
          Product product = getById(productId);
          product.setActive(false);

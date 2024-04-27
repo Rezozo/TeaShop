@@ -8,13 +8,10 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-
-import static com.tea.paradise.config.CacheConfig.PRODUCT_INFO;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -28,7 +25,6 @@ public class ReviewService {
                 .orElse(null);
     }
 
-    @CacheEvict(value = PRODUCT_INFO, key = "'products:' + #review.product.id")
     public Review saveReview(Review review) {
         if (reviewRepository.existsByUser_IdAndProduct_Id(review.getUser().getId(), review.getProduct().getId())) {
             throw new ConstraintViolationException(
@@ -38,7 +34,6 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    @CacheEvict(value = PRODUCT_INFO, key = "'products:' + #review.product.id")
     public Review updateReview(Review review) {
         if (!reviewRepository.existsById(review.getId())) {
             throw new ConstraintViolationException(
@@ -48,7 +43,6 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    @CacheEvict(value = PRODUCT_INFO, key = "'products:' + #review.product.id")
     public void deleteById(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow();
         Users users = userService.getLoggedUserInfo();
