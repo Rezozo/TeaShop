@@ -59,7 +59,8 @@ public abstract class PackageMapper {
     @Mapping(source = "quantity", target = "quantity")
     public abstract ProductAccountingDto toAccountingDto(Product product,
                                                          Integer orderCount,
-                                                         Integer quantity);
+                                                         Integer quantity,
+                                                         String imageUrl);
 
     public ProductAccountingDto mapToAccountingDto(Product product) {
         List<Package> packageList = product.getPackages();
@@ -71,6 +72,8 @@ public abstract class PackageMapper {
         Integer quantity = packageList.stream()
                 .mapToInt(Package::getQuantity)
                 .sum();
-        return toAccountingDto(product, orderCount, quantity);
+        return toAccountingDto(product, orderCount, quantity,
+                product.getImages().stream()
+                        .findFirst().orElseThrow().getImageUrl());
     }
 }

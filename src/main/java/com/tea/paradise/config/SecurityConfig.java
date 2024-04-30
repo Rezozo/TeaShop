@@ -26,13 +26,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests() // TODO update paths
                 .anyRequest().permitAll()
                 .and()
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        //.logoutSuccessUrl("/auth")
-                        .invalidateHttpSession(true)
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
-                        }))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

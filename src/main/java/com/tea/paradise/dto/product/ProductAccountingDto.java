@@ -10,6 +10,7 @@ import lombok.*;
 public class ProductAccountingDto {
     private Long id;
     private String title;
+    private String imageUrl;
     private Integer orderCount;
     private Integer quantity;
     private Boolean active;
