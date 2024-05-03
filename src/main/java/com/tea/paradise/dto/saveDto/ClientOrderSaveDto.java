@@ -15,5 +15,5 @@ public class ClientOrderSaveDto {
     private RecipientDto recipientDto;
     private Long addressId;
     private List<ShortOrderPackageDto> shortOrderPackageDtos;
-    private Boolean isPayWithBonuses;
+    private Integer bonusesSpent;
 }

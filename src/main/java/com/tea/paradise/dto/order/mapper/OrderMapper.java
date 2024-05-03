@@ -72,10 +72,7 @@ public abstract class OrderMapper {
                 .toList();
 
         Integer bonusesAccrued = (int) (totalCost.get() * bonusPercent);
-        Integer bonusesSpent = 0;
-        if (orderSaveDto.getIsPayWithBonuses()) {
-            bonusesSpent = users.getTeaBonuses();
-        }
+        Integer bonusesSpent = orderSaveDto.getBonusesSpent();
         Address address = addressService.getById(orderSaveDto.getAddressId());
         OrderStatus status = orderService.getStatusByTitle(OrderTrackingStatus.NEW);
 
