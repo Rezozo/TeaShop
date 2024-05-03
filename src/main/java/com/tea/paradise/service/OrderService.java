@@ -38,7 +38,7 @@ public class OrderService {
     public Orders updateStatusOrTrack(Long id, OrderTrackingStatus status, String track) {
         Orders order = getById(id);
         if (Objects.nonNull(status)) {
-            order.getOrderStatus().setStatus(status);
+            order.setOrderStatus(statusRepository.findByStatus(status).orElseThrow());
         }
         if (Objects.nonNull(track)) {
             order.setTrackNumber(track);
@@ -63,13 +63,13 @@ public class OrderService {
         bucketService.clear(user.getId());
 
         saveOrder.getPackageOrders().forEach(packageOrder -> {
-                    Package pack = packageOrder.getPack();
-                    if (pack.getQuantity() < packageOrder.getQuantity()) {
-                        throw new ConstraintViolationException("Недостаточно товара на складе", null);
-                    }
-                    pack.setQuantity(pack.getQuantity() - packageOrder.getQuantity());
-                    packageRepository.save(pack);
-                });
+            Package pack = packageOrder.getPack();
+            if (pack.getQuantity() < packageOrder.getQuantity()) {
+                throw new ConstraintViolationException("Недостаточно товара на складе", null);
+            }
+            pack.setQuantity(pack.getQuantity() - packageOrder.getQuantity());
+            packageRepository.save(pack);
+        });
 
         return saveOrder;
     }
