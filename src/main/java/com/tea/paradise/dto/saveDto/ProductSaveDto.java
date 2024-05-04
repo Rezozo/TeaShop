@@ -26,4 +26,6 @@ public class ProductSaveDto {
     @NotNull
     private String description;
     private Short discount;
+    @NotNull
+    private Boolean active;
 }

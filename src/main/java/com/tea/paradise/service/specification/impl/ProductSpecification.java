@@ -49,8 +49,11 @@ public class ProductSpecification implements Specification<Product, ProductFilte
         Path<Boolean> active = root.get(ACTIVE_PATH);
 
         if (Objects.nonNull(filter.getIsActive())) {
-            if (filter.getIsActive())
+            if (filter.getIsActive()) {
                 predicates.add(criteriaBuilder.isTrue(active));
+            } else {
+                predicates.add(criteriaBuilder.isFalse(active));
+            }
         } else {
             predicates.add(criteriaBuilder.isTrue(active));
         }

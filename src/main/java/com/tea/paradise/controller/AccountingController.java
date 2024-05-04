@@ -68,7 +68,7 @@ public class AccountingController {
                         .setTotal((int) products.getTotalElements()));
     }
 
-    @Operation(summary = "Создание нового продукта")
+    @Operation(summary = "Создание или обновление нового продукта")
     @PostMapping("product")
     public ProductFullDto createOrUpdateProduct(@Valid @RequestBody ProductSaveDto product) {
         Product productEntity = productService.createOrUpdate(productMapper.mapSaveModel(product));
@@ -78,13 +78,6 @@ public class AccountingController {
         productEntity.setPackages(packages);
 
         return productMapper.mapFullDto(productEntity);
-    }
-
-    @Operation(summary = "Удаление продукта")
-    @DeleteMapping("product/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
-        productService.deleteById(productId);
-        return ResponseEntity.ok("Продукт успешно удалён");
     }
 
     @Operation(summary = "Изменение статуса или трек номера заказа")
