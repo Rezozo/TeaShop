@@ -37,6 +37,11 @@ public class CategoryService {
 
     @Cacheable(value = CATEGORY_INFO, key = "'categories:' + #parentCategory.name()")
     public List<Category> getAllByParent(ParentCategory parentCategory) {
+        if (ParentCategory.ALL.equals(parentCategory)) {
+            List<Category> categories = categoryRepository.findAllByParentCategory(ParentCategory.TEA);
+            categories.addAll(categoryRepository.findAllByParentCategory(ParentCategory.TEA_DISHES));
+            return categories;
+        }
         return categoryRepository.findAllByParentCategory(parentCategory);
     }
 }
