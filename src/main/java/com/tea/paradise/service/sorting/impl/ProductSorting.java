@@ -22,14 +22,14 @@ public class ProductSorting implements Sorting<Product, ProductSortType> {
         ProductSortType productSortType = sorter.getSortType();
 
         switch (productSortType) {
-            case CHEAP:
+            case CHEAP: // TODO sort with discount
                 Join<Product, Package> cheapPackageJoin = root.join(ProductSpecification.PACKAGE_PATH);
                 Expression<Double> minPrice = criteriaBuilder.min(cheapPackageJoin.get(ProductSpecification.PRICE_PATH));
                 orders.add(criteriaBuilder.asc(minPrice));
                 break;
             case EXPENSIVE:
                 Join<Product, Package> expensivePackageJoin = root.join(ProductSpecification.PACKAGE_PATH);
-                Expression<Double> maxPrice = criteriaBuilder.max(expensivePackageJoin.get(ProductSpecification.PRICE_PATH));
+                Expression<Double> maxPrice = criteriaBuilder.min(expensivePackageJoin.get(ProductSpecification.PRICE_PATH));
                 orders.add(criteriaBuilder.desc(maxPrice));
                 break;
             case POPULAR:
