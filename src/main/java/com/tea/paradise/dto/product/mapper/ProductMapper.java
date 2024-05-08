@@ -6,7 +6,6 @@ import com.tea.paradise.dto.product.ProductFullDto;
 import com.tea.paradise.dto.product.ProductShortDto;
 import com.tea.paradise.dto.saveDto.ProductSaveDto;
 import com.tea.paradise.model.*;
-import com.tea.paradise.model.Package;
 import com.tea.paradise.repository.CategoryRepository;
 import com.tea.paradise.repository.ImagesRepository;
 import org.mapstruct.Mapper;
@@ -14,6 +13,7 @@ import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,6 +44,7 @@ public abstract class ProductMapper {
                 .anyMatch(users -> Objects.equals(users.getId(), userId));
         List<PackageShortDto> packageShortDtos = product.getPackages().stream()
                 .map(aPackage -> packageMapper.toShortDto(aPackage))
+                .sorted(Comparator.comparing(PackageShortDto::getVariantType, Comparator.comparing(Enum::ordinal)))
                 .toList();
         List<Review> reviews = product.getReviews();
         int countOfReviews = Optional.ofNullable(reviews)
@@ -70,6 +71,12 @@ public abstract class ProductMapper {
                         .average()
                         .orElse(0.0))
                 .orElse(0.0);
+        product.setPackages(
+                product.getPackages().stream()
+                        .sorted(Comparator.comparing(pkg -> pkg.getVariant().getTitle()))
+                        .toList()
+        );
+
         return toFullDto(product, countOfReviews, averageRating);
     }
 

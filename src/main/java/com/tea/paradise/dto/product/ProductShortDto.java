@@ -19,6 +19,6 @@ public class ProductShortDto {
     private String title;
     private Short discount;
     private Integer countOfReviews;
-    private Integer averageRating;
+    private Double averageRating;
     private List<ImageDto> images;
 }
