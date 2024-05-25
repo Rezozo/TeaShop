@@ -41,7 +41,7 @@ public class StatisticsService {
                 .sum();
         double totalPrice = orders.stream()
                 .flatMap(order -> order.getPackageOrders().stream())
-                .mapToDouble(po -> po.getFixedPrice() * po.getQuantity())
+                .mapToDouble(po -> po.getFixedPrice() * po.getQuantity() - po.getOrder().getBonusesSpent())
                 .sum();
         statistics.setCountOfOrders(totalOrders);
         statistics.setCountOfSales(totalSales);

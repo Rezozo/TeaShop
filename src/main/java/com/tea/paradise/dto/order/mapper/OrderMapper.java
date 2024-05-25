@@ -104,7 +104,8 @@ public abstract class OrderMapper {
     public OrderShortDto mapToShortDto(Orders orders) {
         Double totalCost = orders.getPackageOrders().stream()
                 .mapToDouble(value -> value.getFixedPrice() * value.getQuantity())
-                .sum();
+                .sum() - orders.getBonusesSpent();
+
         List<PackageOrderDto> packageOrderDtos = orders.getPackageOrders().stream()
                 .map(packageOrder -> packageMapper.mapToOrderDto(packageOrder))
                 .toList();
