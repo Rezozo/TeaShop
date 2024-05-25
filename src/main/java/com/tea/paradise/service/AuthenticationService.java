@@ -71,7 +71,7 @@ public class AuthenticationService {
                     .role(user.getRole().getTitle().name())
                     .build();
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Неправильный логин или пароль");
+            throw new ConstraintViolationException("Неправильный логин или пароль", null);
         }
     }
 

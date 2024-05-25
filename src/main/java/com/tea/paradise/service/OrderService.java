@@ -52,7 +52,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Orders savePaid(Orders orders) {
+    public Orders savePaid(Orders orders) { // TODO если такой recipient уже есть, то достаём его из базы
         Orders saveOrder = orderRepository.save(orders);
         saveOrder.getPackageOrders().forEach(packageOrder -> packageOrder.setOrder(saveOrder));
         packageOrderRepository.saveAll(saveOrder.getPackageOrders());
