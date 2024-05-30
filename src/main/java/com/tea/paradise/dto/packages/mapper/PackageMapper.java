@@ -24,7 +24,7 @@ public abstract class PackageMapper {
     @Autowired
     VariantRepository variantRepository;
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "packageSaveDto.id", target = "id")
     @Mapping(source = "variant", target = "variant")
     @Mapping(source = "product", target = "product")
     @Mapping(target = "packageBuckets", ignore = true)

@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PackageSaveDto {
+    private Long id;
     @NotNull
     private VariantType variant;
     @NotNull
