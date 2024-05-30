@@ -80,7 +80,7 @@ public abstract class ProductMapper {
         return toFullDto(product, countOfReviews, averageRating);
     }
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "saveDto.id", target = "id")
     @Mapping(target = "packages", ignore = true)
     @Mapping(target = "favoriteUsers", ignore = true)
     @Mapping(target = "reviews", ignore = true)
