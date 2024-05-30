@@ -34,7 +34,7 @@ public abstract class PackageMapper {
                                         Product product);
 
     public Package mapSaveModel(PackageSaveDto packageSaveDto, Product product) {
-        Variant variant = variantRepository.findById(packageSaveDto.getVariantId()).orElseThrow();
+        Variant variant = variantRepository.findByTitle(packageSaveDto.getVariant()).orElseThrow();
         return toSaveModel(packageSaveDto, variant, product);
     }
 

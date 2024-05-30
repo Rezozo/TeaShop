@@ -1,5 +1,6 @@
 package com.tea.paradise.dto.saveDto;
 
+import com.tea.paradise.enums.VariantType;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @Builder
 public class PackageSaveDto {
     @NotNull
-    private Integer variantId;
+    private VariantType variant;
     @NotNull
     private Integer quantity;
     @NotNull
